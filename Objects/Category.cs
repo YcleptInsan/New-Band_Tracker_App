@@ -180,7 +180,8 @@ namespace ToDoList
       {
        int taskId = rdr.GetInt32(0);
        string taskDescription = rdr.GetString(1);
-       Task newTask = new Task(taskDescription, taskId);
+       bool taskCompletion = rdr.GetBoolean(2);
+       Task newTask = new Task(taskDescription, taskCompletion, taskId);
        tasks.Add(newTask);
       }
       if (rdr != null)
