@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 
 namespace ToDoList
 {
+  [Collection("ToDo")]
   public class ToDoTest : IDisposable
   {
     public ToDoTest()
@@ -14,7 +15,7 @@ namespace ToDoList
     }
 
     [Fact]
-    public void Test_DatabaseEmptyAtFirst()
+    public void Test_GetAll_DatabaseEmptyAtFirst_0()
     {
       //Arrange, Act
       int result = Task.GetAll().Count;
@@ -24,24 +25,24 @@ namespace ToDoList
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueIfDescriptionsAreTheSame()
+    public void Test_Equals_ReturnsTrueIfDescriptionsAreTheSame()
     {
       //Arrange, Act
-      Task firstTask = new Task("Mow the lawn", 1);
-      Task secondTask = new Task("Mow the lawn", 1);
+      Task firstTask = new Task("Mow the lawn");
+      Task secondTask = new Task("Mow the lawn");
 
       //Assert
       Assert.Equal(firstTask, secondTask);
     }
 
     [Fact]
-    public void Test_Save_SavesToDatabase()
+    public void Test_Save_SavesTaskToDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn",1);
+      Task testTask = new Task("Mow the lawn");
+      testTask.Save();
 
       //Act
-      testTask.Save();
       List<Task> result = Task.GetAll();
       List<Task> testList = new List<Task>{testTask};
 
@@ -53,10 +54,10 @@ namespace ToDoList
     public void Test_Save_AssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn",1);
+      Task testTask = new Task("Mow the lawn");
+      testTask.Save();
 
       //Act
-      testTask.Save();
       Task savedTask = Task.GetAll()[0];
 
       int result = savedTask.GetId();
@@ -70,7 +71,7 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn",1);
+      Task testTask = new Task("Mow the lawn");
       testTask.Save();
 
       //Act
@@ -82,6 +83,7 @@ namespace ToDoList
     public void Dispose()
     {
       Task.DeleteAll();
+      Category.DeleteAll();
     }
   }
 }
