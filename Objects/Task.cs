@@ -8,11 +8,13 @@ namespace ToDoList
   {
     private int _id;
     private string _description;
+    private bool _completed;
 
-    public Task(string Description, int Id = 0)
+    public Task(string Description, bool Completed, int Id = 0)
     {
       _id = Id;
       _description = Description;
+      _completed = Completed;
     }
 
     public override bool Equals(System.Object otherTask)
@@ -26,7 +28,8 @@ namespace ToDoList
         Task newTask = (Task) otherTask;
         bool idEquality = (this.GetId() == newTask.GetId());
         bool descriptionEquality = (this.GetDescription() == newTask.GetDescription());
-        return (idEquality && descriptionEquality);
+        bool completedEquality = (this.GetCompleted() == newTask.GetCompleted());
+        return (idEquality && descriptionEquality && completedEquality);
       }
     }
 
@@ -37,6 +40,10 @@ namespace ToDoList
     public string GetDescription()
     {
       return _description;
+    }
+    public bool GetCompleted()
+    {
+      return _completed;
     }
 
     public static List<Task> GetAll()
@@ -53,7 +60,8 @@ namespace ToDoList
       {
         int taskId = rdr.GetInt32(0);
         string taskDescription = rdr.GetString(1);
-        Task newTask = new Task(taskDescription, taskId);
+        bool taskCompletion = rdr.GetBoolean(2);
+        Task newTask = new Task(taskDescription, taskCompletion, taskId);
         allTasks.Add(newTask);
       }
 
@@ -73,13 +81,18 @@ namespace ToDoList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description) OUTPUT INSERTED.id VALUES (@TaskDescription);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description, completion) OUTPUT INSERTED.id VALUES (@TaskDescription ,@TaskCompletion);", conn);
 
       SqlParameter descriptionParameter = new SqlParameter();
       descriptionParameter.ParameterName = "@TaskDescription";
       descriptionParameter.Value = this.GetDescription();
 
+      SqlParameter completionParameter = new SqlParameter();
+      completionParameter.ParameterName = "@TaskCompletion";
+      completionParameter.Value = this.GetCompleted();
+
       cmd.Parameters.Add(descriptionParameter);
+      cmd.Parameters.Add(completionParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -119,13 +132,15 @@ namespace ToDoList
 
       int foundTaskId = 0;
       string foundTaskDescription = null;
+      bool foundTaskCompletion = true;
 
       while(rdr.Read())
       {
         foundTaskId = rdr.GetInt32(0);
         foundTaskDescription = rdr.GetString(1);
+        foundTaskCompletion = rdr.GetBoolean(2);
       }
-      Task foundTask = new Task(foundTaskDescription, foundTaskId);
+      Task foundTask = new Task(foundTaskDescription, foundTaskCompletion, foundTaskId);
 
       if (rdr != null)
       {

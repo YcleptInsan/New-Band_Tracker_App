@@ -28,8 +28,8 @@ namespace ToDoList
     public void Test_Equals_ReturnsTrueIfDescriptionsAreTheSame()
     {
       //Arrange, Act
-      Task firstTask = new Task("Mow the lawn");
-      Task secondTask = new Task("Mow the lawn");
+      Task firstTask = new Task("Mow the lawn", true);
+      Task secondTask = new Task("Mow the lawn", true);
 
       //Assert
       Assert.Equal(firstTask, secondTask);
@@ -39,7 +39,7 @@ namespace ToDoList
     public void Test_Save_SavesTaskToDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", true);
       testTask.Save();
 
       //Act
@@ -54,7 +54,7 @@ namespace ToDoList
     public void Test_Save_AssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", true);
       testTask.Save();
 
       //Act
@@ -71,7 +71,7 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", true);
       testTask.Save();
 
       //Act
@@ -84,7 +84,7 @@ namespace ToDoList
     public void AddCategory_AddsCategoryToTask_CategoryList()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", true);
       testTask.Save();
 
       Category testCategory = new Category("Home stuff");
@@ -104,7 +104,7 @@ namespace ToDoList
     public void GetCategories_ReturnsAllTaskCategories_CategoryList()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", true);
       testTask.Save();
 
       Category testCategory1 = new Category("Home Stuff");
@@ -129,7 +129,8 @@ namespace ToDoList
       testCategory.Save();
 
       string testDescription = "Mow the lawn";
-      Task testTask = new Task(testDescription);
+      bool testCompletion = true;
+      Task testTask = new Task(testDescription, testCompletion);
       testTask.Save();
 
       //Act
