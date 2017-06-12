@@ -10,7 +10,7 @@ namespace ToDoList
     private string _description;
     private bool _completed;
 
-    public Task(string Description, bool Completed, int Id = 0)
+    public Task(string Description, bool Completed = false, int Id = 0)
     {
       _id = Id;
       _description = Description;
@@ -45,7 +45,10 @@ namespace ToDoList
     {
       return _completed;
     }
-
+    // public bool SetCompleted()
+    // {
+    //   return true;
+    // }
     public static List<Task> GetAll()
     {
       List<Task> allTasks = new List<Task>{};
@@ -233,6 +236,38 @@ namespace ToDoList
         conn.Close();
       }
       return categories;
+    }
+
+    public void Update(bool newCompletion)
+    { //Update method for bools
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE tasks SET completion = @NewCompletion OUTPUT INSERTED.completion WHERE id = @TaskId;", conn);
+
+      SqlParameter newCompletionParameter = new SqlParameter();
+      newCompletionParameter.ParameterName = "@NewCompletion";
+      newCompletionParameter.Value = newCompletion;
+      cmd.Parameters.Add(newCompletionParameter);
+
+      SqlParameter taskIdParameter = new SqlParameter();
+      taskIdParameter.ParameterName = "@TaskId";
+      taskIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(taskIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._completed = rdr.GetBoolean(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
 
     public void Delete()

@@ -1,0 +1,14 @@
+@if(Model["form-type"] == "task-completed")
+{
+  <div class="container">
+    <h1>Complete Task</h1>
+    <hr/>
+    <h2>Are you sure you want to mark this task as completed?</h2>
+
+    <h4>@Model["task"].GetDescription()</h4>
+    <form action='/task/@Model["task"].GetId()/completed' method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      <button type="submit">Mark Completed</button>
+    </form>
+  </div>
+}

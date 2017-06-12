@@ -7,7 +7,7 @@
   <ul>
     @foreach (var category in @Model["taskCategories"])
     {
-      <li>@category.GetName()</li>
+      <li><a href="/categories/@category.GetId()">@category.GetName()</a></li>
     }
   </ul>
 }
@@ -22,5 +22,14 @@
     }
   </select>
   <button type="submit">Add</button>
+</form>
+
+@if (@Model["isCompleted"].GetCompleted() == true)
+{
+  <p>Completed</p>
+}
+
+<form action="/task/@Model["task"].GetId()/completed" method="get">
+  <input id="task-completed" name="task-completed" type="hidden" value="task-completed"><button type="submit">Mark this task as complete.</button>
 </form>
 <p><a href="/">Return Home</a></p>

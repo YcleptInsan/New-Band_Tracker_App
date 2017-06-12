@@ -48,6 +48,7 @@ namespace ToDoList
         model.Add("task", SelectedTask);
         model.Add("taskCategories", TaskCategories);
         model.Add("allCategories", AllCategories);
+        model.Add("isCompleted", SelectedTask);
         return View["task.cshtml", model];
       }; //returns individual instance of task
       Get["/categories/{id}"] = parameters => {
@@ -70,6 +71,7 @@ namespace ToDoList
         model.Add("task", task);
         model.Add("taskCategories", TaskCategories);
         model.Add("allCategories", AllCategories);
+        model.Add("isCompleted", task);
         return View["task.cshtml", model];
       }; //posts from form adding category
       Post["category/add_task"] = _ => {
@@ -84,6 +86,28 @@ namespace ToDoList
         model.Add("allCategories", AllCategories);
         return View["category.cshtml", model];
       }; //posts from form adding task to category page
+      Get["/task/{id}/completed"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Task SelectedTask = Task.Find(parameters.id);
+        string taskCompleted = Request.Query["task-completed"];
+        model.Add("form-type", taskCompleted);
+        model.Add("task", SelectedTask);
+        return View["completed.cshtml", model];
+      }; //returns page confirming task completion
+
+      Patch["/task/{id}/completed"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Task SelectedTask = Task.Find(parameters.id);
+        List<Category> TaskCategories = SelectedTask.GetCategories();
+        List<Category> AllCategories = Category.GetAll();
+        SelectedTask.Update(true);
+        model.Add("task", SelectedTask);
+        model.Add("taskCategories", TaskCategories);
+        model.Add("allCategories", AllCategories);
+        model.Add("isCompleted", SelectedTask);
+        return View["task.cshtml", model];
+      }; //returns category page with task marked completed
+
       Get["category/edit/{id}"] = parameters => {
         Category SelectedCategory = Category.Find(parameters.id);
         return View["category_edit.cshtml", SelectedCategory];
