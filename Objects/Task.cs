@@ -186,7 +186,7 @@ namespace ToDoList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT categories.* FROM tasks JOIN categories_tasks ON (tasks.id = categories_task.task_id) JOIN categories ON (categories_tasks.category_id = categories.id) WHERE tasks.id = @TaskId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT categories.* FROM tasks JOIN categories_tasks ON (tasks.id = categories_tasks.task_id) JOIN categories ON (categories_tasks.category_id = categories.id) WHERE tasks.id = @TaskId", conn);
 
       SqlParameter taskIdParameter = new SqlParameter();
       taskIdParameter.ParameterName = "@TaskId";
