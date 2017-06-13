@@ -12,7 +12,7 @@
   </ul>
 }
 <h4>Add a category to this task:</h4>
-<form action="/task/add_category" method="post">
+<form action='/task/@Model["task"].GetId()/add_category' method="post">
   <input id="task-id" name="task-id" type="hidden" value='@Model["task"].GetId()'>
   <label for="category-id">Select a category</label>
   <select id="category-id" name="category-id" type="text">

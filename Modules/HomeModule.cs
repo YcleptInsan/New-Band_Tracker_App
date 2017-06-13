@@ -40,7 +40,7 @@ namespace ToDoList
         List<Category> AllCategories = Category.GetAll();
         return View["categories.cshtml", AllCategories];
       }; //posts from form adding new category
-      Get["tasks/{id}"] = parameters => {
+      Get["/tasks/{id}"] = parameters => {
         Dictionary<string, object> model = new Dictionary<string, object>();
         Task SelectedTask = Task.Find(parameters.id);
         List<Category> TaskCategories = SelectedTask.GetCategories();
@@ -61,29 +61,30 @@ namespace ToDoList
         model.Add("allTasks", AllTasks);
         return View["category.cshtml", model];
       }; //returns individual instance of category
-      Post["task/add_category"] = _ => {
+      Post["/task/{id}/add_category"] = parameters => {
         Category category = Category.Find(Request.Form["category-id"]);
         Task task = Task.Find(Request.Form["task-id"]);
         task.AddCategory(category);
         Dictionary<string, object> model = new Dictionary<string, object>();
-        List<Category> TaskCategories = task.GetCategories();
-        List<Category> AllCategories = Category.GetAll();
+        List<Category> taskCategories = task.GetCategories();
+        List<Category> allCategories = Category.GetAll();
         model.Add("task", task);
-        model.Add("taskCategories", TaskCategories);
-        model.Add("allCategories", AllCategories);
+        model.Add("taskCategories", taskCategories);
+        model.Add("allCategories", allCategories);
         model.Add("isCompleted", task);
-        return View["task.cshtml", model];
+        return View["index.cshtml", model];
       }; //posts from form adding category
-      Post["category/add_task"] = _ => {
+      Post["/category/{id}/add_task"] = parameters => {
         Category category = Category.Find(Request.Form["category-id"]);
         Task task = Task.Find(Request.Form["task-id"]);
         category.AddTask(task);
         Dictionary<string, object> model = new Dictionary<string, object>();
-        List<Category> TaskCategories = task.GetCategories();
-        List<Category> AllCategories = Category.GetAll();
-        model.Add("task", task);
-        model.Add("taskCategories", TaskCategories);
-        model.Add("allCategories", AllCategories);
+        Category SelectedCategory = Category.Find(parameters.id);
+        List<Task> CategoryTasks = SelectedCategory.GetTasks();
+        List<Task> AllTasks = Task.GetAll();
+        model.Add("category", SelectedCategory);
+        model.Add("categoryTasks", CategoryTasks);
+        model.Add("allTasks", AllTasks);
         return View["category.cshtml", model];
       }; //posts from form adding task to category page
       Get["/task/{id}/completed"] = parameters => {
@@ -108,11 +109,11 @@ namespace ToDoList
         return View["task.cshtml", model];
       }; //returns category page with task marked completed
 
-      Get["category/edit/{id}"] = parameters => {
+      Get["/category/edit/{id}"] = parameters => {
         Category SelectedCategory = Category.Find(parameters.id);
         return View["category_edit.cshtml", SelectedCategory];
       }; //edit individual category
-      Patch["category/edit/{id}"] = parameters => {
+      Patch["/category/edit/{id}"] = parameters => {
         Dictionary<string, object> model = new Dictionary<string, object>();
         Category SelectedCategory = Category.Find(parameters.id);
         SelectedCategory.Update(Request.Form["category-name"]);
@@ -123,11 +124,11 @@ namespace ToDoList
         model.Add("allTasks", AllTasks);
         return View["category.cshtml", model];
       }; //posts from editing individual category
-      Get["category/delete/{id}"] = parameters => {
+      Get["/category/delete/{id}"] = parameters => {
         Category SelectedCategory = Category.Find(parameters.id);
         return View["category_delete.cshtml", SelectedCategory];
       }; //delete individual category
-      Delete["category/delete/{id}"] = parameters => {
+      Delete["/category/delete/{id}"] = parameters => {
         Category SelectedCategory = Category.Find(parameters.id);
         SelectedCategory.Delete();
         List<Category> AllCategories = Category.GetAll();

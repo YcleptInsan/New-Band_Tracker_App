@@ -11,12 +11,12 @@ else
   <ul>
     @foreach (var task in @Model["categoryTasks"])
     {
-      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</li>
+      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a></li>
     }
   </ul>
 }
 <h4>Add a task to this category:</h4>
-<form action="/category/add_task" method="post">
+<form action='/category/@Model["category"].GetId()/add_task' method="post">
   <input id="category-id" type="hidden" name="category-id" value='@Model["category"].GetId()'>
   <label for="task-id">Select a Task</label>
   <select id='task-id' name='task-id' type='text'>
