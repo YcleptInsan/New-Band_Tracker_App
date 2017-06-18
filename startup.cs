@@ -5,7 +5,7 @@ using Nancy.Owin;
 using Nancy;
 using Nancy.ViewEngines.Razor;
 
-namespace ToDoList
+namespace WorldTour
 {
   public class Startup
   {
@@ -40,6 +40,6 @@ namespace ToDoList
   }
   public static class DBConfiguration
   {
-    public static string ConnectionString = "Data Source = (localdb)\\mssqllocaldb;Initial Catalog=todo;Integrated Security=SSPI;";
+    public static string ConnectionString = "Data Source = (localdb)\\mssqllocaldb;Initial Catalog=band_tracker;Integrated Security=SSPI;";
   }
 }

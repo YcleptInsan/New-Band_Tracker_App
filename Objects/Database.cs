@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace ToDoList
+namespace WorldTour
 {
   public class DB
   {
