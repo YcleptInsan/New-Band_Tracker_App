@@ -22,12 +22,13 @@ This web application will allows a user to track bands and the venues where they
 ## Setup/Installation Requirements
 
 https://github.com/YcleptInsan/New-Band_Tracker_App
-Click the "download or clone" button and copy the link.
-In your computers terminal type "git clone" & paste the copied link.
-Once downloaded you can open the index.html file in the browser of your choice.
-You can view the code using the text editor of your choice as well.
-
-Next, SQLCMD: > CREATE DATABASE band_tracker; > GO > USE band_tracker; > GO > CREATE TABLE band (id INT IDENTITY(1,1), name VARCHAR(255)); > CREATE TABLE venue (id INT IDENTITY(1,1), name VARCHAR(255)); > GO ; CREATE TABLE bands_venues (id INT IDENITY(1,1), band_id INT, venue_id INT); > GO ;
+1. Click the "clone" button and copy the link.
+2. In your computers terminal type "git clone" & paste the copied link.
+3. Once downloaded you can open the index.html file in the browser of your choice.
+4. You can view the code using the text editor of your choice as well.
+5. In PowerShell type: sqlcmd -S "(localdb)\mssqllocaldb",
+6. Next, type SQLCMD: > CREATE DATABASE salon; > GO > USE salon; > GO > CREATE TABLE client (id INT IDENTITY(1,1), name VARCHAR(255), stylist_id INT); > CREATE TABLE stylist (id INT IDENTITY(1,1), name VARCHAR(255)); > GO. 
+7. To view the page, you need to initialize the local server by typing dnx kestrel in your powershell window. Next, you will need to input http://localhost:5004/ into your prefered browser to view the actual page content.   
 
 ## Known Bugs
 
