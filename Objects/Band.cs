@@ -143,7 +143,7 @@ namespace WorldTour
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO venues_bands (venues_id, bands_id) VALUES (@VenueId, @BandId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO bands_venues (venues_id, bands_id) VALUES (@VenueId, @BandId);", conn);
 
       SqlParameter venueIdParameter = new SqlParameter();
       venueIdParameter.ParameterName = "@VenueId";
@@ -168,22 +168,26 @@ namespace WorldTour
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT venues.* FROM bands JOIN venues_bands ON (bands.id = venues_bands.bands_id) JOIN venues ON (venues_bands.venues_id = venues.id) WHERE bands.id = @BandId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT venues.* FROM bands JOIN bands_venues ON (bands.id = bands_venues.bands_id) JOIN venues ON (bands_venues.venues_id = venues.id) WHERE bands.id = @BandId", conn);
 
       SqlParameter bandIdParameter = new SqlParameter();
       bandIdParameter.ParameterName = "@BandId";
       bandIdParameter.Value = this.GetId().ToString();
+
       cmd.Parameters.Add(bandIdParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
       List<Venue> venues = new List<Venue> {};
 
+
       while (rdr.Read())
       {
         int venueId = rdr.GetInt32(0);
         string venueName = rdr.GetString(1);
         Venue newVenue = new Venue(venueName, venueId);
+        venues.Add(newVenue);
+
       }
       if (rdr != null)
       {
@@ -232,7 +236,7 @@ namespace WorldTour
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM bands WHERE id = @BandId; DELETE FROM venues_bands WHERE bands_id = @BandId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM bands WHERE id = @BandId; DELETE FROM bands_venues WHERE bands_id = @BandId;", conn);
 
       SqlParameter bandIdParameter = new SqlParameter();
       bandIdParameter.ParameterName = "@BandId";

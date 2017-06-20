@@ -81,7 +81,7 @@ namespace WorldTour
       Assert.Equal(testBand, foundBand);
     }
     [Fact]
-    public void AddVenue_AddsVenueToBand_VenueList()
+    public void Test_AddVenue_AddsBandToVenue()
     {
       //Arrange
       Band testBand = new Band("kendrick lamar");
@@ -90,8 +90,12 @@ namespace WorldTour
       Venue testVenue = new Venue("Orange Peel");
       testVenue.Save();
 
+      Venue testVenue2 = new Venue("Emporium");
+      testVenue2.Save();
+
       //Act
       testBand.AddVenue(testVenue);
+
 
       List<Venue> result = testBand.GetVenues();
       List<Venue> testList = new List<Venue>{testVenue};
