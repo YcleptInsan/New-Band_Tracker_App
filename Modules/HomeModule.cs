@@ -26,7 +26,7 @@ namespace WorldTour
         return View["bands_form.cshtml"];
       }; //returns form to add new band
       Post["/bands/new"] = _ => {
-        Band newBand = new Band(Request.Form["band-name"], Request.Form["venue-id"]);
+        Band newBand = new Band(Request.Form["band-name"]);
         newBand.Save();
         List<Band> AllBands = Band.GetAll();
         return View["bands.cshtml", AllBands];
